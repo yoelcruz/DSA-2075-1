@@ -1,6 +1,5 @@
-package game.backend;
+package game.backend.models;
 
-import java.util.Collections;
 import java.util.List;
 
 public class User {

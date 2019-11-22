@@ -1,5 +1,8 @@
-package game.backend;
-
+package game.backend.models;
+/**
+ * FormReg it's a class to just send the registration and login data
+ * from Android
+ */
 public class FormReg {
     String username;
     String password;

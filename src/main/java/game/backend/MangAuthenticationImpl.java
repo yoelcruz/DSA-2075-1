@@ -1,6 +1,6 @@
 package game.backend;
 
-import com.sun.org.apache.xml.internal.utils.StringComparable;
+import game.backend.models.User;
 
 public class MangAuthenticationImpl implements MangAuthentication {
 

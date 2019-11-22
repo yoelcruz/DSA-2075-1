@@ -1,5 +1,7 @@
 package game.backend;
 
+import game.backend.models.User;
+
 public interface MangAuthentication {
 
     /**Add user to the DataBase when ask for a registration
@@ -9,7 +11,7 @@ public interface MangAuthentication {
     public int addUser (User u);
 
     /**Check if the login it's correct
-     * @param u of this element we have to check if the password and username are the same as in the DB
+     * @param u,p of this element we have to check if the password and username are the same as in the DB
      * @return 0-Okey 1-Wrong
      *
     * */
