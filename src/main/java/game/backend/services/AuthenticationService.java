@@ -36,7 +36,7 @@ public class AuthenticationService {
         int a = tm.addUser(reg);
         UserTO userTO = new UserTO(reg); //We create the UserTO with the parameters of the user to just send the important info
         if (a == 0){return Response.status(201).entity(userTO).build();}
-        else{return Response.status(800).entity(userTO).build();}
+        else{return Response.status(406).entity(userTO).build();}
     }
 
 
