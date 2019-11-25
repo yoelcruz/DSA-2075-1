@@ -26,8 +26,19 @@ public class MangAuthenticationImpl implements MangAuthentication {
         return 0;
     }
 
+    private static String createQuerySELECT2(Object entity) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SELECT * FROM ").append(entity.getClass().getSimpleName());
+        sb.append(" WHERE username = ?");
+
+        return sb.toString();
+    }
 
     public int checkUser(String u, String p) {
+
+
+        String theQuery = createQuerySELECT2(new User());
+
         //We check the user in the DB
         if((u.equals("Alb"))&&(p.equals("123"))) {
             return 0;

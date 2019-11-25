@@ -6,6 +6,16 @@ public class User {
     /**
      * Atributes
      */
+    int ID;
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
     String username;
     String name;
     String password;
@@ -13,8 +23,8 @@ public class User {
     int attack;
     int defense;
     int money;
-    List<LQ> myObj;
-    List<Game>myGames;
+//    List<LQ> myObj;
+//    List<Game>myGames;
     public User(){}
 
     public User(String un, String pw, String nm){
@@ -26,8 +36,8 @@ public class User {
         this.attack=20;
         this.defense=0;
         this.money=100;
-        this.myObj= null;
-        this.myGames=null;
+     //   this.myObj= null;
+     //   this.myGames=null;
     }
 
     public String getUsername() {
@@ -85,12 +95,12 @@ public class User {
     public void setMoney(int money) {
         this.money = money;
     }
-
+/*
     public List<LQ> getMyObj() {
         return myObj;
     }
 
-    public void setMyObj(List<LQ> myObj) {
+   public void setMyObj(List<LQ> myObj) {
         this.myObj = myObj;
     }
     public List<Game> getMyGames() {
@@ -100,7 +110,7 @@ public class User {
     public void setMyGames(List<Game> myGames) {
         this.myGames = myGames;
     }
-
+*/
     /**
      * LQ it's a subclass that allow us
      * to have a list of objects and quantity for each user
