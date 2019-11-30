@@ -1,14 +1,19 @@
 package game.backend.services;
 
+import game.backend.MangUser;
+import game.backend.MangUserImp;
+import game.backend.models.Game;
 import game.backend.models.User;
-import game.backend.UsersManager;
-import game.backend.UsersManagerImp;
+import game.backend.models.Obj;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,120 +23,62 @@ import java.util.List;
 @Path("/users")
 public class UsersService {
 
-    private UsersManager um;
+    private MangUser um;
 
     public UsersService() {
-        this.um = new UsersManagerImp().getInstance();
-        if (um.size()==0) {
+        this.um = new MangUserImp().getInstance();
+        if (um.size() == 0) {
             this.um.addUser("yooel", "1234", "yoel");
-            this.um.addUser("albeeerto", "1234", "alberto");
-            this.um.addUser("daaani", "1234", "dani");
-            this.um.addUser("jooona", "1234", "jona");
-            this.um.addObjetWithNameUser("yoel","espada",1, 5);
-            this.um.addObjetWithNameUser("alberto","cofre",0, 0);
-            this.um.addObjetWithNameUser("dani","escudo",5, 1);
-            this.um.addObjetWithNameUser("jona","escudo",5, 1);
+            this.um.addUser("albeerto", "1234", "alberto");
+            this.um.addUser("daani", "1234", "dani");
+            this.um.addUser("joona", "1234", "jona");
+            this.um.addObjetWithUserName("yooel", "espada", 1, 5, 5);
+            this.um.addObjetWithUserName("yooel", "cofre", 0, 0, 3);
+            this.um.addObjetWithUserName("albeerto", "cofre", 0, 0, 3);
+            this.um.addObjetWithUserName("daani", "escudo", 5, 1, 4);
+            this.um.addObjetWithUserName("joona", "escudo", 5, 1, 4);
+            this.um.addGamesWithUserName("yooel", "1", "14/08/2019", 1, 1, 1, 1);
+            this.um.addGamesWithUserName("yooel", "2", "15/08/2019", 1, 2, 2, 2);
         }
     }
 
     @GET
-    @ApiOperation(value = "get all usuarios", notes = "asdasd")
+    @ApiOperation(value = "Objetos de un usuario", notes = "Introduce el userName para objetener sus objetos")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
-    })
-    @Path("/sortedAlphabetically")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUsuarios() {
-
-        List<User> users = this.um.usersSortedAlphabetically();
-
-        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {
-        };
-        return Response.status(201).entity(entity).build();
-    }
-
-  /*  @POST
-    @ApiOperation(value = "Create a new Usuario", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response=Usuario.class),
-            @ApiResponse(code = 500, message = "Validation Error")
-
-    })
-
-    @Path("/")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response newUsuario(User user) {
-
-        if (user.getId()==null)  return Response.status(500).entity(usuario).build();
-        this.um.addUsuario(usuario);
-        return Response.status(201).entity(usuario).build();
-    }
-
-    @PUT
-    @ApiOperation(value = "Update a Usuario with the id that you write", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "Track not found")
-    })
-    @Path("/")
-    public Response updateUsuarioById(Usuario usuario) {
-
-        Usuario u = this.um.updateUsuarioById(usuario);
-
-        if (u == null) return Response.status(404).build();
-
-        return Response.status(201).build();
-    }
-
-    @GET
-    @ApiOperation(value = "Get a Usuario", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Usuario.class),
+            @ApiResponse(code = 201, message = "Successful", response = Obj.class, responseContainer = "List"),
             @ApiResponse(code = 404, message = "Usuario not found")
     })
-    @Path("/{id}")
+    @Path("/{userName}/objetos")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUsuarioById(@PathParam("id") String id) {
-        Usuario u = this.um.getUsuarioById(id);
-        if (u == null) return Response.status(404).build();
-        else  return Response.status(201).entity(u).build();
-    }
-
-    @GET
-    @ApiOperation(value = "Get Objeto de un usuario", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Objeto.class, responseContainer="List"),
-            @ApiResponse(code = 404, message = "Usuario not found")
-    })
-    @Path("/{id}/objetos")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getObjetoDeUnUsuario(@PathParam("id") String id) {
-        Usuario u = this.um.getUsuarioById(id);
+    public Response getObjetoDeUnUsuario(@PathParam("userName") String userName) {
+        User u = this.um.getUserByUserName(userName);
         if (u == null) return Response.status(404).build();
         else {
-            List<Objeto> objetos = u.getObjetos();
-            GenericEntity<List<Objeto>> entity = new GenericEntity<List<Objeto>>(objetos) {};
+            List<Obj> objects = u.getMyObject();
+            GenericEntity<List<Obj>> entity = new GenericEntity<List<Obj>>(objects) {
+            };
             return Response.status(201).entity(entity).build();
         }
     }
 
-
-    @POST
-    @ApiOperation(value = "Crear un objeto", notes = "asdasd")
+    @GET
+    @ApiOperation(value = "Partidas de un usuario", notes = "Introduce el userName para objetener sus partidas")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Objeto.class, responseContainer="List"),
-            @ApiResponse(code = 404, message = "Usuario not found"),
-            @ApiResponse(code = 500, message = "Validation Error")
+            @ApiResponse(code = 201, message = "Successful", response = Game.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = "Usuario not found")
     })
-    @Path("/{id}/objetos")
+    @Path("/{userName}/partidas")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response crearObjeto(@PathParam("id") String id, Objeto objeto) {
-
-        Usuario u = this.um.getUsuarioById(id);
+    public Response getPartidasDeUnUsuario(@PathParam("userName") String userName) {
+        User u = this.um.getUserByUserName(userName);
         if (u == null) return Response.status(404).build();
-        else  {
-            u.addObjeto(objeto.getName(),objeto.getCantidad());
-            return Response.status(201).entity(objeto).build();
+        else {
+            List<Game> games = u.getMyGames();
+            GenericEntity<List<Game>> entity = new GenericEntity<List<Game>>(games) {
+            };
+            return Response.status(201).entity(entity).build();
         }
-    }*/
+    }
 }
+
+

@@ -3,25 +3,23 @@ package game.backend;
 import game.backend.models.User;
 import org.apache.log4j.Logger;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UsersManagerImp implements UsersManager {
-    private static UsersManager instance;
+public class MangUserImp implements MangUser {
+    private static MangUser instance;
     protected List<User> users;
     protected List<Object> objects;
-    final static Logger logger = Logger.getLogger(UsersManagerImp.class);
+    final static Logger logger = Logger.getLogger(MangUserImp.class);
 
-    public UsersManagerImp() {
+    public MangUserImp() {
 
         this.users = new LinkedList<>();
         this.objects = new LinkedList<>();
     }
 
-    public static UsersManager getInstance() {
-        if (instance==null) instance = new UsersManagerImp();
+    public static MangUser getInstance() {
+        if (instance==null) instance = new MangUserImp();
         return instance;
     }
 

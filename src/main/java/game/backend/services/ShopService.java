@@ -1,10 +1,8 @@
 package game.backend.services;
 
-import game.backend.MangUser;
-import game.backend.MangUserImp;
-import game.backend.models.Game;
+import game.backend.MangShop;
+import game.backend.MangShopImp;
 import game.backend.models.Obj;
-import game.backend.models.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -19,66 +17,37 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Api(value = "/games", description = "Endpoint to Game Service")
-@Path("/games")
-public class GamesService {
+@Api(value = "/Shop", description = "Endpoint to Shop Service")
+@Path("/Shop")
+public class ShopService {
 
-    private MangUser um;
+    private MangShop ms;
 
-    public GamesService() {
-        this.um = new MangUserImp().getInstance();
-        if (um.size() == 0) {
-            this.um.addUser("yooel", "1234", "yoel");
-            this.um.addUser("albeerto", "1234", "alberto");
-            this.um.addUser("daani", "1234", "dani");
-            this.um.addUser("joona", "1234", "jona");
-            this.um.addObjetWithUserName("yooel", "espada", 1, 5, 5);
-            this.um.addObjetWithUserName("yooel", "cofre", 0, 0, 3);
-            this.um.addObjetWithUserName("albeerto", "cofre", 0, 0, 3);
-            this.um.addObjetWithUserName("daani", "escudo", 5, 1, 4);
-            this.um.addObjetWithUserName("joona", "escudo", 5, 1, 4);
-            this.um.addGamesWithUserName("yooel", "1", "14/08/2019", 1, 1, 1, 1);
-            this.um.addGamesWithUserName("yooel", "2", "15/08/2019", 1, 2, 2, 2);
+    public ShopService() {
+        this.ms = new MangShopImp().getInstance();
+        if (ms.size() == 0) {
+            this.ms.addObject("Espada", 1, 5, 5);
+            this.ms.addObject("Cofre", 0, 0, 3);
+            this.ms.addObject("Escudo", 5, 1, 4);
+            this.ms.addObject("Hacha", 1, 5, 5);
         }
     }
 
     @GET
-    @ApiOperation(value = "Objetos de un usuario", notes = "Introduce el userName para objetener sus objetos")
+    @ApiOperation(value = "Get all objects", notes = "Objetos de la tienda")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Obj.class, responseContainer = "List"),
-            @ApiResponse(code = 404, message = "Usuario not found")
+            @ApiResponse(code = 201, message = "Successful", response = Obj.class, responseContainer="List"),
     })
-    @Path("/{userName}/objetos")
+    @Path("/Objetos de la tienda")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getObjetoDeUnUsuario(@PathParam("userName") String userName) {
-        User u = this.um.getUserByUserName(userName);
-        if (u == null) return Response.status(404).build();
-        else {
-            List<Obj> objects = u.getMyObject();
-            GenericEntity<List<Obj>> entity = new GenericEntity<List<Obj>>(objects) {
-            };
-            return Response.status(201).entity(entity).build();
-        }
+    public Response getObjectos() {
+
+        List<Obj> objects = this.ms.allObjects();
+        GenericEntity<List<Obj>> entity = new GenericEntity<List<Obj>>(objects) {
+        };
+        return Response.status(201).entity(entity).build();
     }
 
-    @GET
-    @ApiOperation(value = "Partidas de un usuario", notes = "Introduce el userName para objetener sus partidas")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Game.class, responseContainer = "List"),
-            @ApiResponse(code = 404, message = "Usuario not found")
-    })
-    @Path("/{userName}/partidas")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getPartidasDeUnUsuario(@PathParam("userName") String userName) {
-        User u = this.um.getUserByUserName(userName);
-        if (u == null) return Response.status(404).build();
-        else {
-            List<Game> games = u.getMyGames();
-            GenericEntity<List<Game>> entity = new GenericEntity<List<Game>>(games) {
-            };
-            return Response.status(201).entity(entity).build();
-        }
-    }
 }
 
 

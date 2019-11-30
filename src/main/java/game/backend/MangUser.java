@@ -4,7 +4,7 @@ import game.backend.models.User;
 
 import java.util.List;
 
-public interface UsersManager {
+public interface MangUser {
     public void addUser(String userName, String password, String name);
     public int size();
     public User getUserByUserName(String userName);
